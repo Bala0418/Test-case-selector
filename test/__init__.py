@@ -1,39 +1,36 @@
 import random
-from typing import Optional
+from typing import Optional, List, Tuple
 
-class TestBase:
-    def rand(x: int):
-        return random.randrange(x)
+def rand(x: int):
+    return random.randrange(x)
 
-    def make_set(testCases: list, indexes: Optional[list] = []):
-        list = []
-        final_list = []
-        unique_test_cases = []
-        if len(indexes) == 0:
-            for number_of_attributes in range(len(testCases[0])):
-                indexes.append(number_of_attributes)
-        if indexes is not None:
-            for i in indexes:
-                for l in testCases:
-                    list.append(l[i])
-                for unique in list:
-                    if unique not in unique_test_cases:
-                        unique_test_cases.append(unique)
-                final_list.append(unique_test_cases.copy())
-                unique_test_cases.clear()
-                list.clear()
-        return final_list
+def max_index(select_from: list):
+    rows = []
+    for i in select_from:
+        rows.append(len(i))
+    index =  rows.index(max(rows))
+    return index
 
-    def reduce_test_cases(original_test_data: tuple, indexes: Optional[list] = []):
-        final = []
-        temp = []
-        new_set = TestBase.make_set(original_test_data, indexes)
-        for y in range(len(new_set[0])):
-            for list in original_test_data:
-                if new_set[0][y] == list[0]:
-                    temp.append(list)
-            if len(temp) > 1:
-                temp.pop(TestBase.rand(len(temp)))
-            final.extend(temp)
-            temp.clear()
-        return final
+def make_set(test_cases: List[Tuple], indexes: Optional[List] = None):
+    result = []
+    for index in indexes:
+        result.append(list(set([test_case[index] for test_case in test_cases])))
+    return result
+
+def reduce_test_cases(original_test_data: List[Tuple], indexes: Optional[List] = None):
+    if not indexes:
+        indexes = range(len(original_test_data[0]))
+    new_set = make_set(original_test_data, indexes)
+    index = max_index(new_set)
+    final = []
+    temp = []
+    
+    for x in range(len(new_set[index])):
+        for rows in original_test_data:
+            if rows.__contains__(new_set[index][x]):
+                temp.append(rows)
+        if len(temp) > 1:
+            temp.pop(rand(len(temp)))
+        final.extend(temp)
+        temp.clear()
+    return final

@@ -1,6 +1,6 @@
-from test import TestBase
+import test
 
-testCases = [
+test_cases = [
     ('name', 'equal', 'Balazs'),
     ('name', 'not_equal', 'Balazs'),
     ('city', 'equal', 'Debrecen'),
@@ -11,9 +11,8 @@ testCases = [
     ('bool', 'not_equal', False)
 ]
 
-inputIndexes = [0, 1]
+input_indexes = [0, 1]
 
-test_set = TestBase.make_set(testCases)
-
-reducedTestCases = TestBase.reduce_test_cases(testCases, inputIndexes)
-print(reducedTestCases)
+reduced_test_cases = test.reduce_test_cases(test_cases, input_indexes)
+print(reduced_test_cases)
+print(f'Original number of test cases: {len(test_cases)}, Reduced number of test cases: {len(reduced_test_cases)}')
